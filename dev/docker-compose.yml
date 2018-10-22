@@ -1,0 +1,14 @@
+version: "3"
+services:
+  sample-server:
+    image: tomcat:8.0
+    volumes: 
+      - /private/tmp/twc-data/project/sample-project/sample-app/target/sample-server:/usr/local/tomcat/webapps/sample-server
+    ports: 
+      - 8080:8080
+  static-res:
+    image: tomcat:8.0
+    volumes:
+      - /private/tmp/twc-data/project/sample-project/static-res:/usr/local/tomcat/webapps/static-res
+    ports: 
+      - 38000:8080
