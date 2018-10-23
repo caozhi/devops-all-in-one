@@ -21,7 +21,7 @@ RUN ssh-keygen -N '' -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key && \
 
 ## 4. Add deployment codes
 ADD copy_id.expect /root/deploy/
-ADD run.sh /root/deploy
+ADD run.sh /run.sh
 RUN chmod +x /run.sh
 
 CMD [ "/run.sh" ]
