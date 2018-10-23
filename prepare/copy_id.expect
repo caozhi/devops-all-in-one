@@ -1,0 +1,12 @@
+#!/usr/bin/expect -f
+  ## usage: ./copy_id_expect.expect root 172.17.0.3 password
+
+  set user [lindex $argv 0]
+  set host [lindex $argv 1]
+  set password [lindex $argv 2]
+  set timeout -1
+
+  spawn ssh-copy-id -i /root/.ssh/id_rsa.pub -p 22 -o "StrictHostKeyChecking no" $user@$host
+  expect "*assword:*"
+  send "$password\r"
+  interact

@@ -1,0 +1,23 @@
+version: "3"
+services:
+  test1:
+    image: centos-ssh:latest
+  test2:
+    image: centos-ssh:latest
+  test3:
+    image: centos-ssh:latest
+  ansible:
+    image: centos-ssh:latest
+    depends_on:
+    - test1
+    - test2
+    - test3
+    links:
+    - test1
+    - test2
+    - test3
+
+
+## todo: 
+## 1. 改名字
+### docker compose 里触发执行一些命令，或者在外部调compose的时候去触发执行，做：生成ssh-keygen, copy-id
