@@ -1,0 +1,8 @@
+[app]
+appserver1
+appserver2
+appserver3
+[persistence]
+persistence_server
+[static]
+static_server

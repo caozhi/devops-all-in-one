@@ -1,21 +1,37 @@
 version: "3"
 services:
-  test1:
-    image: centos-ssh:latest
-  test2:
-    image: centos-ssh:latest
-  test3:
-    image: centos-ssh:latest
+  static_server:
+    container_name: static_server
+    image: centos-tomcat:latest
+  persistence_server:
+    container_name: persistence_server
+    image: centos-tomcat:latest
+  appserver1:
+    container_name: appserver1
+    image: centos-tomcat:latest
+  appserver2:
+    container_name: appserver2
+    image: centos-tomcat:latest
+  appserver3:
+    container_name: appserver3
+    image: centos-tomcat:latest
   ansible:
-    image: centos-ssh:latest
+    container_name: ansible
+    image: centos-ansible:latest
+    volumes:
+    - /Users/caozhi/home/twc-data/project/devops-all-in-one:/root/deploy/mnt
     depends_on:
-    - test1
-    - test2
-    - test3
+    - static_server
+    - persistence_server
+    - appserver1
+    - appserver2
+    - appserver3
     links:
-    - test1
-    - test2
-    - test3
+    - static_server
+    - persistence_server
+    - appserver1
+    - appserver2
+    - appserver3
 
 
 ## todo: 
