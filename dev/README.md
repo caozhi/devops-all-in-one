@@ -25,7 +25,7 @@ sh init_devenv.sh
 
 ### configure your project folder in compose file
 
-Modify the {cloned_proj_folder} in docker-compose.yml file to your. Typically, it's the same folder you cloned your poject above.
+Modify the {cloned_proj_folder} in docker-compose.yml file to your own project folder. Typically, it's the same folder you cloned your poject above.
 
 ### start up local runtime environment
 
