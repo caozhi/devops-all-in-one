@@ -1,8 +1,9 @@
 - name: copy static artifact
   copy: src={{item.src}} dest={{item.dest}} backup=yes owner=root group=root
   with_items:
-  - { src: static.zip, dest: "{{tomcat_basedir}}/webapps" }
-- name: deploy new one
+  - { src: latest.tar.gz, dest: "{{tomcat_basedir}}/webapps/static-res.tar.gz" }
+- name: extract
+  unarchive: src = {{tomcat_basedir}}/webapps/static-res.tar.gz copy = no
 
 
 

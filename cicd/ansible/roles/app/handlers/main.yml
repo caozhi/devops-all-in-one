@@ -1,6 +1,6 @@
   - name: Restart Tomcat
-    # shell: {{tomcat_basedir}}/bin/startup.sh
+    shell: {{tomcat_basedir}}/bin/startup.sh
     shell: echo start up tomcat
   - name: Stop Tomcat
     shell: echo start up tomcat
-    # shell:  {{tomcat_basedir}}/bin/shutdown.sh
+    shell:  {{tomcat_basedir}}/bin/shutdown.sh
