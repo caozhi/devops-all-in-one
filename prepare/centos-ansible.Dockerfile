@@ -12,16 +12,18 @@ RUN yum makecache
 ## 2. install nessaray tools
 RUN yum install -y openss openssh-clients openssh-server expect sudo ansible
 
-## 3. init env: sshkey, 
+## 3. init env: sshkey; 
 RUN ssh-keygen -N '' -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key && \
  ssh-keygen -N '' -q -t ed25519 -f /etc/ssh/ssh_host_ed25519_key && \
  ssh-keygen -N '' -q -t rsa -f /etc/ssh/ssh_host_rsa_key && \
  ssh-keygen -N '' -q -t rsa -f /root/.ssh/id_rsa && \
  echo "root:devops2018" | chpasswd
 
-## 4. Add deployment codes
+# copy an expect shell script for auto inputing password when ssh to other container
 ADD copy_id.expect /root/deploy/
 RUN chmod +x /root/deploy/copy_id.expect
+
+## 4. Add deployment codes. It will make the container always running
 ADD run.sh /run.sh
 RUN chmod +x /run.sh    
 

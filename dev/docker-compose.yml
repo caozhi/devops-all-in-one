@@ -4,12 +4,14 @@ services:
     conainer_name: sample-server
     image: tomcat:8.0
     volumes: 
+      # replace {cloned_proj_folder} to your own project path
       - {cloned_proj_folder}/sample-app/target/sample-server:/usr/local/tomcat/webapps/sample-server
     ports: 
       - 8080:8080
   static-res:
     image: tomcat:8.0
     volumes:
+      # replace {cloned_proj_folder}
       - {cloned_proj_folder}/sample-app/target:/usr/local/tomcat/webapps/static-res
     ports: 
       - 38000:8080
