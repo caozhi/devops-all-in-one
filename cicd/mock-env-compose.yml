@@ -32,8 +32,3 @@ services:
     - appserver1
     - appserver2
     - appserver3
-
-
-## todo: 
-## 1. 改名字
-### docker compose 里触发执行一些命令，或者在外部调compose的时候去触发执行，做：生成ssh-keygen, copy-id

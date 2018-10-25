@@ -1,0 +1,14 @@
+- name: copy app package
+  copy: src={{item.src}} dest={{item.dest}} backup=yes owner=root group=root
+  with_items:
+  - { src: latest.war, dest: "{{tomcat_basedir}}/webapps/sample-server.war" }
+  when: 
+  - action == 'upgrade'
+  with_items:
+  - { src: last_stable.war, dest: "{{tomcat_basedir}}/webapps/sample-server.war"  }
+  when: 
+  - action == 'rollback'
+- name: backup persistence storage
+  command: 
+  notify: Restart Tomcat
+

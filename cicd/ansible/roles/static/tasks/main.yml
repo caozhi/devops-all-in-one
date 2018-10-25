@@ -1,0 +1,8 @@
+- name: copy static artifact
+  copy: src={{item.src}} dest={{item.dest}} backup=yes owner=root group=root
+  with_items:
+  - { src: static.zip, dest: "{{tomcat_basedir}}/webapps" }
+- name: deploy new one
+
+
+

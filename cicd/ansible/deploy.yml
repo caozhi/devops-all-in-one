@@ -1,0 +1,12 @@
+---
+- hosts: app
+  user: root
+  roles:
+  - app
+  - static
+  vars:
+    action: "{{action}}"
+# - hosts: static
+#   user: root
+#   roles:
+#   - static
