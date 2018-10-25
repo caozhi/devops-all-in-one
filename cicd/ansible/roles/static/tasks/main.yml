@@ -3,7 +3,7 @@
   with_items:
   - { src: latest.tar.gz, dest: "{{tomcat_basedir}}/webapps/static-res.tar.gz" }
 - name: extract
-  unarchive: src = {{tomcat_basedir}}/webapps/static-res.tar.gz copy = no
+  unarchive: src = "{{tomcat_basedir}}/webapps/static-res.tar.gz" copy = no
 
 
 
