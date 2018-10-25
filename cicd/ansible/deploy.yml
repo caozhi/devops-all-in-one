@@ -3,10 +3,11 @@
   user: root
   roles:
   - app
-  - static
   vars:
     action: "{{action}}"
-# - hosts: static
-#   user: root
-#   roles:
-#   - static
+- hosts: static
+  user: root
+  roles:
+    - static
+  vars:
+    action: "{{action}}"

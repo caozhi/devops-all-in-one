@@ -1,14 +1,26 @@
+
+- name: stop app first
+  command: echo commmand
+  notify: Stop Tomcat
+
 - name: copy app package
   copy: src={{item.src}} dest={{item.dest}} backup=yes owner=root group=root
   with_items:
   - { src: latest.war, dest: "{{tomcat_basedir}}/webapps/sample-server.war" }
   when: 
-  - action == 'upgrade'
+  - action == "upgrade"
   with_items:
   - { src: last_stable.war, dest: "{{tomcat_basedir}}/webapps/sample-server.war"  }
   when: 
-  - action == 'rollback'
-- name: backup persistence storage
-  command: "echo Just an echo for back persistance"
-- notify: Restart Tomcat
+  - action == "rollback"
+
+- name: backup or rollback persistence storage
+  command: "echo Just an echo for backup persistance"
+  notify: Restart Tomcat
+  when: 
+  - action == "upgrade"
+  command: "echo Just an echo for rollback persistance"
+  notify: Restart Tomcat
+  when: 
+  - action == "rollback"
 

@@ -1,9 +1,23 @@
+- name: stop app first
+  command: echo commmand
+  notify: Stop Tomcat
+
 - name: copy static artifact
-  copy: src={{item.src}} dest={{item.dest}} backup=yes owner=root group=root
+  copy: src={{item.src}} dest={{item.dest}} backup=yes # owner=root group=root
   with_items:
   - { src: latest.tar.gz, dest: "{{tomcat_basedir}}/webapps/static-res.tar.gz" }
+  when:
+  - action == "upgrade"
+  with_items:
+  - { src: last_stable.tar.gz, dest: "{{tomcat_basedir}}/webapps/static-res.tar.gz" }
+  when:
+  - action == "rollback"
 - name: extract
-  unarchive: src = "{{tomcat_basedir}}/webapps/static-res.tar.gz" copy = no
+  unarchive: src="{{tomcat_basedir}}/webapps/static-res.tar.gz" dest="{{tomcat_basedir}}/webapps/" copy=no mode=0755
+  notify: Restart Tomcat
+
+  
+
 
 
 
