@@ -9,6 +9,6 @@
   when: 
   - action == 'rollback'
 - name: backup persistence storage
-  command: 
-  notify: Restart Tomcat
+  command: "echo Just an echo for back persistance"
+- notify: Restart Tomcat
 
