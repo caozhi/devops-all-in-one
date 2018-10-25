@@ -1,25 +1,37 @@
 node {
     def mvnHome
     def appproj_folder
+    def app_package 
+    def static_package
     
-    // env.JAVA_HOME = tool 'jdk1.8'
+    // this is the path in container
+    def ansible_proj_path="/root/deploy/ansible/ansible"
+    
+    // this is the path on host
+    def ansible_proj_path_on_host="/root/project/devops-all-in-one/cicd/ansible"
+    
 
     // Sync codes
     stage('Preparation') { 
         git 'git@github.com:caozhi/sample-project.git'
         
-        // maven needs to be installed and name should be 'mvn3' in configuratble tools
         mvnHome = tool 'mvn3'
         jdkHome = tool 'jdk1.8'
         
         appproj_folder = 'sample-app'
-        
     }
 
    stage('Build') {
         // update build number
+        sh "sed -i '/^Buildnumber.*/d' sample-app/src/main/webapp/META-INF/MANIFEST.MF"
+        sh "echo Buildnumber: ${BUILD_NUMBER} >> sample-app/src/main/webapp/META-INF/MANIFEST.MF"
         
         // submit to git
+        sh 'git config --local user.name caozhi'
+        sh 'git config --local user.email caozhi0321@gmail.com'
+        sh 'git add sample-app/src/main/webapp/META-INF/MANIFEST.MF'
+        sh 'git commit -m "udpate buildnumber: ${BUILD_NUMBER}"'
+        sh 'git push'
         
         // Run the maven build
         dir('sample-app') {
@@ -30,37 +42,49 @@ node {
     stage('Packages') {
         junit 'sample-app/target/surefire-reports/TEST-*.xml'
         sh 'mv sample-app/target/*.war sample-app/target/sample-server-${BUILD_NUMBER}.war'
-        archiveArtifacts 'sample-app/target/*.war'
         
-        // todo: archive zip file
+        sh 'rm -f static-res*.tar.gz'
+        sh 'tar -czvf static-res-${BUILD_NUMBER}.tar.gz static-res'
+        
+        static_package = "static-res-${BUILD_NUMBER}.tar.gz"
+        app_package = "sample-server-${BUILD_NUMBER}.war"
+        archiveArtifacts 'sample-app/target/*.war'
+        archiveArtifacts 'static-res*.tar.gz'
     }
     
     stage('Test') {
-        // 1. send pacakge to test environment
-        
-        // 2. deploy new testing environment
-        // one appinstance and one static instance
-            // stop application -> deploy new package -> start application
-        
-        // 3. call status api to check the. -. Using polling
-        
-        // 4. [no real action] start to run funcational testing, performance testing or other necessary testing
-        // !!!! 
+        // deployment procedure is similar as Prod
+        echo 'deploy to test'
+        echo '[no real action] start to run performance testing and functional test or other necessary testing !!!! '
     }
     
     stage('Staging') {
-        // 1. send pacakge to test environment
-        
-        // 2. deploy new testing environment
-        // three appinstance and one static instance
-        
-        // 3. call status api to check the 
-        
-        // 4. [no real action] start to run system testing and UAT or other necessary testing
-        // !!!! 
+        // deployment procedure is similar as Prod
+        echo 'deploy to stage'
+        echo '[no real action] start to run system testing and UAT or other necessary testing !!!! '
     }
     
     stage('Prod') {
+        // pre: mock environments have been started up successfully.
+        // 3 server and 1 static resources server
         
+        // 1. send pacakge to test environment
+        sh 'docker cp sample-app/target/*.war ansible:'+ansible_proj_path+'/roles/app/files'
+        sh 'docker cp *.tar.gz ansible:'+ansible_proj_path+'/roles/static/files'
+        
+        // 2. deploy prod  environment
+        // three appinstance and one static instance
+        dir(ansible_proj_path_on_host) {
+            sh 'cd roles/app/files && rm latest.war && ln -s ' + app_package + ' latest.war';
+            sh 'cd roles/static/files && rm latest.tar.gz && ln -s ' + static_package + ' latest.tar.gz';
+        }
+
+        // execute deployment in ansible container
+        sh 'docker exec ansible ansible-playbook '+ansible_proj_path+'/deploy.yml -e action=upgrade'
+        
+        dir(ansible_proj_path_on_host) {
+            sh 'cd roles/app/files && rm last_stable.war && ln -s ' + app_package + ' last_stable.war';
+            sh 'cd roles/static/files && rm last_stable.tar.gz && ln -s ' + static_package + ' last_stable.tar.gz';
+        }
     }
 }
