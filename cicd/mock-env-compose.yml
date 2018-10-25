@@ -19,7 +19,7 @@ services:
     container_name: ansible
     image: caozhi/centos-ansible:latest
     volumes:
-    - /root/project/devops-all-in-one/cicd:/root/deploy/
+    - /root/project/devops-all-in-one/cicd:/root/deploy/ansible
     depends_on:
     - static_server
     - persistence_server
