@@ -3,7 +3,7 @@
 Implemented a Jenkins Pipeline to mock a whole pipeline from prepare to production. 
 Using ansible to implement the deployment process.
 
-## Starting Up a Cluster
+## Start Up a Cluster
 
 ```shell
 ./mock.sh
@@ -13,7 +13,7 @@ The script will using docker compose to start a cluster with 6 containers. Then 
 
 ## jenkins/Jenkinsfile
 
-Jenkins pipeline. Read the code, you’ll know how it works.
+Jenkins pipeline. Read the code, you’ll know how it works. Also you can visit the Jenkins server for more detail: http://47.104.217.100:8080/job/PIPELINE
 
 ## Ansbile Folder
 
