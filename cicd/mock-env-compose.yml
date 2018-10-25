@@ -2,24 +2,24 @@ version: "3"
 services:
   static_server:
     container_name: static_server
-    image: centos-tomcat:latest
+    image: caozhi/centos-tomcat:latest
   persistence_server:
     container_name: persistence_server
-    image: centos-tomcat:latest
+    image: caozhi/centos-tomcat:latest
   appserver1:
     container_name: appserver1
-    image: centos-tomcat:latest
+    image: caozhi/centos-tomcat:latest
   appserver2:
     container_name: appserver2
-    image: centos-tomcat:latest
+    image: caozhi/centos-tomcat:latest
   appserver3:
     container_name: appserver3
-    image: centos-tomcat:latest
+    image: caozhi/centos-tomcat:latest
   ansible:
     container_name: ansible
-    image: centos-ansible:latest
+    image: caozhi/centos-ansible:latest
     volumes:
-    - /Users/caozhi/home/twc-data/project/devops-all-in-one:/root/deploy/mnt
+    - /root/project/devops-all-in-one/cicd:/root/deploy/
     depends_on:
     - static_server
     - persistence_server
